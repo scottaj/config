@@ -33,6 +33,13 @@ alias emacsc='emacsclient -t -a "" -c'
 #alias emacs='emacsclient -t -a ""'
 alias rc.d='sudo rc.d'
 alias editor='emacsclient -t -a "" -c'
-
+alias gits='git status -s'                                                                                                                                                                                            
+alias gita='git add'                                                                                                                                                                                                                       
+alias gitc='git commit'
+alias gitca='git commit -a'                                                                                                                                                                                                          
+alias pull='git pull'
+alias push='git push'
+alias merge='git merge'
+alias clone='git clone'
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
