@@ -1,5 +1,3 @@
-
-
 ;;; This was installed by package-install.el.
 ;;; This provides support for the package system and
 ;;; interfacing with ELPA, the package archive.
@@ -25,11 +23,20 @@
 
 (setq visible-bell t)
 
+;; Paren Matching
+(show-paren-mode t)
+(setq show-paren-style 'expression)
+
+;; IDO Mode
+(setq ido-enable-flex-matching t)
+  (setq ido-everywhere t)
+  (ido-mode 1)
+
 ;; Snippets
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/yas")
-    (require 'yasnippet) ;; not yasnippet-bundle
-    (yas/initialize)
-    (yas/load-directory "/usr/share/emacs/site-lisp/yas/snippets")
+   (require 'yasnippet) ;; not yasnippet-bundle
+   (yas/initialize)
+   (yas/load-directory "/usr/share/emacs/site-lisp/yas/snippets")
 (yas/global-mode 1)
 
 ;; Git
@@ -62,9 +69,9 @@
 
 ;; Ruby
 (autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
-    (autoload 'inf-ruby-keys "inf-ruby" "" t)
-    (eval-after-load 'ruby-mode
-      '(add-hook 'ruby-mode-hook 'inf-ruby-keys))
+  (autoload 'inf-ruby-keys "inf-ruby" "" t)
+   (eval-after-load 'ruby-mode
+     '(add-hook 'ruby-mode-hook 'inf-ruby-keys))
 
 
 (require 'ruby-electric)
@@ -88,3 +95,22 @@
 ;(add-to-list 'package-archives
 ;             '("marmalade" . "http://marmalade-repo.org/packages/") t)
 ;(package-initialize)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(auto-revert-check-vc-info t)
+ '(electric-indent-mode t)
+ '(electric-pair-mode t)
+ '(global-auto-revert-mode t)
+ '(global-linum-mode t)
+ '(indent-tabs-mode nil)
+ '(standard-indent 2)
+ '(yas/trigger-key "RET"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
