@@ -1,15 +1,119 @@
-;;; This was installed by package-install.el.
-;;; This provides support for the package system and
-;;; interfacing with ELPA, the package archive.
-;;; Move this code earlier if you want to reference
-;;; packages in your .emacs.
-(when
-    (load
-     (expand-file-name "~/.emacs.d/elpa/package.el"))
-  (package-initialize))
+(require 'package)
+(add-to-list 'package-archives 
+    '("marmalade" .
+      "http://marmalade-repo.org/packages/"))
+(package-initialize)
 
-;; Hotkeys
-(global-set-key (kbd "s-c c") 'comment-or-uncomment-region)
+;; Marmalade Packages
+(require 'browse-kill-ring)
+(browse-kill-ring-default-keybindings)
+
+;; (require 'ctags)
+;; (require 'ctags-update)
+;; (setq tags-revert-without-query t) (global-set-key (kbd "<f5>") 'ctags-create-or-update-tags-table)
+;; (global-set-key (kbd "<backtab>") 'ctags-search)
+;; (ctags-update-minor-mode 1)
+
+(require 'coffee-mode)
+
+(require 'haml-mode)
+
+(require 'ruby-end)
+
+(require 'rainbow-delimiters)
+(global-rainbow-delimiters-mode)
+
+(require 'ruby-block)
+
+(require 'ruby-tools)
+
+(require 'yaml-mode)
+
+(require 'slim-mode)
+
+(require 'redo+)
+
+(require 'clojure-mode)
+
+;(require 'clojure-test-mode)
+
+(require 'cljdoc)
+
+(require 'feature-mode)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ac-auto-show-menu 1.0)
+ '(ac-ignores (quote ("end" "def")))
+ '(coffee-tab-width 2)
+ '(column-number-mode t)
+ '(ctags-update-command "/usr/local/Cellar/ctags/5.8/bin/ctags")
+ '(custom-enabled-themes (quote (manoj-dark)))
+ '(electric-indent-mode t)
+ '(electric-layout-mode t)
+ '(electric-pair-mode t)
+ '(fancy-splash-image nil)
+ '(global-linum-mode t)
+ '(ido-mode (quote both) nil (ido))
+ '(indent-tabs-mode nil)
+ '(inhibit-startup-screen t)
+ '(initial-buffer-choice "~/Documents")
+ '(kill-whole-line t)
+ '(line-number-mode nil)
+ '(ruby-end-insert-newline nil)
+ '(shell-file-name "/bin/bash")
+ '(show-paren-mode t)
+ '(show-paren-style (quote expression))
+ '(size-indication-mode t)
+ '(standard-indent 2)
+ '(tab-always-indent (quote complete))
+ '(tool-bar-mode nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(linum ((t (:background "color-45" :foreground "black"))))
+ '(mode-line ((t (:background "grey75" :foreground "color-29" :box 1 :height 0.9))))
+ '(mode-line-buffer-id ((t (:background "grey65" :foreground "color-20" :weight bold :height 0.9))))
+ '(rainbow-delimiters-depth-1-face ((t (:foreground "White"))))
+ '(rainbow-delimiters-depth-2-face ((t (:foreground "Red"))))
+ '(rainbow-delimiters-depth-3-face ((t (:foreground "Orange"))))
+ '(rainbow-delimiters-depth-4-face ((t (:foreground "Yellow"))))
+ '(rainbow-delimiters-depth-5-face ((t (:foreground "Green"))))
+ '(rainbow-delimiters-depth-6-face ((t (:foreground "Cyan"))))
+ '(rainbow-delimiters-depth-7-face ((t (:foreground "Blue"))))
+ '(rainbow-delimiters-depth-8-face ((t (:foreground "Purple"))))
+ '(rainbow-delimiters-depth-9-face ((t (:foreground "Magenta")))))
+
+;; Turn off Bell
+(setq ring-bell-function 'ignore)
+
+
+;; AC Mode
+(add-to-list 'load-path "~/.emacs.d/")
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d//ac-dict")
+(ac-config-default)
+
+
+;; Line Numbers in Margin
+(require 'linum)
+
+
+(global-set-key (kbd "C-c c") 'comment-or-uncomment-region)
+(global-set-key (kbd "C-z") 'undo)
+(global-set-key (kbd "M-z") 'redo)
+(global-set-key (kbd "M-s") 'shell)
+
+; Change C-up and C-down to be page up/down
+(fset 'up-50 "\C-u50\C-p")
+(fset 'down-50 "\C-u50\C-n")
+(global-set-key (kbd "C-x <up>") 'up-50)
+(global-set-key (kbd "C-x <down>") 'down-50)
 
 (defadvice comment-or-uncomment-region (before slick-comment activate compile)
   "When called interactively with no active region, comment a single line instead."
@@ -18,99 +122,18 @@
      (list (line-beginning-position)
 	   (line-beginning-position 2)))))
 
-(global-set-key (kbd "s-c s") 'shell)
-(global-set-key (kbd "s-z") 'undo)
+;(global-set-key (kbd "s-c s") 'shell)
+;(global-set-key (kbd "s-z") 'undo)
 
-(setq visible-bell t)
+;(setq visible-bell t)
 
-;; Paren Matching
-(show-paren-mode t)
-(setq show-paren-style 'expression)
-
-;; IDO Mode
-(setq ido-enable-flex-matching t)
-  (setq ido-everywhere t)
-  (ido-mode 1)
-
-;; Snippets
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/yas")
-   (require 'yasnippet) ;; not yasnippet-bundle
-   (yas/initialize)
-   (yas/load-directory "/usr/share/emacs/site-lisp/yas/snippets")
-(yas/global-mode 1)
-
-;; Git
-(autoload 'magit-status "magit" nil t)
+;(add-hook 'ruby-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
 
 
-;; Colors
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/color-theme.el")
-(require 'color-theme)
-(eval-after-load "color-theme"
-  '(progn
-     (color-theme-initialize)
-     (color-theme-midnight)))
+;; OSX font
+(set-face-attribute 'default nil :font "menlo")
+(set-face-attribute 'default nil :height 160)
 
-;; Javascript
-(autoload 'js2-mode "js2-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-
-;; Clojure
-(add-to-list 'load-path "~/.clojure_emacs/clojure-mode")
-(require 'clojure-mode)
-
-(add-to-list 'load-path "~/.clojure_emacs/rainbow.el")
-
-;; Auto Complete
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/")
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "/usr/share/emacs/site-lisp//ac-dict")
-(ac-config-default)
-
-;; Ruby
-(autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
-  (autoload 'inf-ruby-keys "inf-ruby" "" t)
-   (eval-after-load 'ruby-mode
-     '(add-hook 'ruby-mode-hook 'inf-ruby-keys))
-
-
-(require 'ruby-electric)
-(add-hook 'ruby-mode-hook (lambda () (ruby-electric-mode t)))
-
-(add-hook 'ruby-mode-hook (lambda () (local-set-key "\r" 'newline-and-indent)))
-
-
-;; Line Numbers
-(require 'linum)
-
-
-;; Slim Mode
-(require 'slim-mode)
-
-;; Coffeescript
-(require 'coffee-mode)
-
-;; Packages
-;(require 'package)
-;(add-to-list 'package-archives
-;             '("marmalade" . "http://marmalade-repo.org/packages/") t)
-;(package-initialize)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(auto-revert-check-vc-info t)
- '(electric-indent-mode t)
- '(electric-pair-mode t)
- '(global-auto-revert-mode t)
- '(global-linum-mode t)
- '(indent-tabs-mode nil)
- '(standard-indent 2)
- '(yas/trigger-key "RET"))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;; Switch windows with SHIFT+arrow keys
+(windmove-default-keybindings)
+(global-set-key (kbd "<select>") 'windmove-up)
