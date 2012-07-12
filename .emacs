@@ -8,10 +8,10 @@
 (require 'browse-kill-ring)
 (browse-kill-ring-default-keybindings)
 
-;; (require 'ctags)
+(require 'ctags)
 ;; (require 'ctags-update)
 ;; (setq tags-revert-without-query t) (global-set-key (kbd "<f5>") 'ctags-create-or-update-tags-table)
-;; (global-set-key (kbd "<backtab>") 'ctags-search)
+(global-set-key (kbd "<backtab>") 'ctags-search)
 ;; (ctags-update-minor-mode 1)
 
 (require 'coffee-mode)
@@ -37,7 +37,41 @@
 
 ;(require 'clojure-test-mode)
 
-(require 'cljdoc)
+;(require 'cljdoc)
+
+;(require 'color-theme)
+
+(require 'flymake)
+(require 'flymake-d)
+(require 'flymake-css)
+(require 'flymake-php)
+(require 'flymake-haml)
+(require 'flymake-ruby)
+(require 'flymake-sass)
+(require 'flymake-coffee)
+(require 'flymake-jshint)
+
+(require 'rvm)
+
+(require 'starter-kit)
+
+(require 'smart-operator)
+
+(require 'sr-speedbar)
+
+(require 'wrap-region)
+
+(require 'paredit)
+
+(require 'magit)
+
+(require 'js2-mode)
+
+(require 'heroku)
+
+(require 'idle-highlight-mode)
+
+(require 'dired-single)
 
 (require 'feature-mode)
 
@@ -51,6 +85,11 @@
  '(coffee-tab-width 2)
  '(column-number-mode t)
  '(ctags-update-command "/usr/local/Cellar/ctags/5.8/bin/ctags")
+ '(cua-enable-cua-keys nil)
+ '(cua-mode t nil (cua-base))
+ '(cua-rectangle-mark-key [C-return])
+ '(cua-remap-control-v nil)
+ '(cua-remap-control-z nil)
  '(custom-enabled-themes (quote (manoj-dark)))
  '(electric-indent-mode t)
  '(electric-layout-mode t)
@@ -70,12 +109,17 @@
  '(size-indication-mode t)
  '(standard-indent 2)
  '(tab-always-indent (quote complete))
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(transient-mark-mode nil)
+ '(wrap-region-global-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(flymake-errline ((t (:underline "brightred"))))
+ '(flymake-warnline ((t (:underline "white"))))
+ '(idle-highlight ((t (:inherit region :background "brightblack"))))
  '(linum ((t (:background "color-45" :foreground "black"))))
  '(mode-line ((t (:background "grey75" :foreground "color-29" :box 1 :height 0.9))))
  '(mode-line-buffer-id ((t (:background "grey65" :foreground "color-20" :weight bold :height 0.9))))
@@ -92,8 +136,6 @@
 ;; Turn off Bell
 (setq ring-bell-function 'ignore)
 
-
-;; AC Mode
 (add-to-list 'load-path "~/.emacs.d/")
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d//ac-dict")
@@ -102,7 +144,6 @@
 
 ;; Line Numbers in Margin
 (require 'linum)
-
 
 (global-set-key (kbd "C-c c") 'comment-or-uncomment-region)
 (global-set-key (kbd "C-z") 'undo)
@@ -114,6 +155,10 @@
 (fset 'down-50 "\C-u50\C-n")
 (global-set-key (kbd "C-x <up>") 'up-50)
 (global-set-key (kbd "C-x <down>") 'down-50)
+
+;; Search word
+(global-set-key (kbd "C-q") (kbd "M-b C-s C-w"))
+
 
 (defadvice comment-or-uncomment-region (before slick-comment activate compile)
   "When called interactively with no active region, comment a single line instead."
@@ -131,7 +176,7 @@
 
 
 ;; OSX font
-(set-face-attribute 'default nil :font "menlo")
+(set-face-attribute 'default nil :font "consolas")
 (set-face-attribute 'default nil :height 160)
 
 ;; Switch windows with SHIFT+arrow keys
