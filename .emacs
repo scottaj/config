@@ -6,13 +6,14 @@
       "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
-(defun set-exec-path-from-shell-PATH ()
-  (let ((path-from-shell 
-      (replace-regexp-in-string "[[:space:]\n]*$" "" 
-        (shell-command-to-string "$SHELL -l -c 'echo $PATH'"))))
-    (setenv "PATH" path-from-shell)
-    (setq exec-path (split-string path-from-shell path-separator))))
-(when (equal system-type 'darwin) (set-exec-path-from-shell-PATH))
+(when (display-graphic-p)
+  (defun set-exec-path-from-shell-PATH ()
+    (let ((path-from-shell 
+           (replace-regexp-in-string "[[:space:]\n]*$" "" 
+                                     (shell-command-to-string "$SHELL -l -c 'echo $PATH'"))))
+      (setenv "PATH" path-from-shell)
+      (setq exec-path (split-string path-from-shell path-separator))))
+  (when (equal system-type 'darwin) (set-exec-path-from-shell-PATH)))
 
 ;; Marmalade Packages
 (require 'browse-kill-ring)
@@ -103,11 +104,6 @@
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-
-;; Cursor
-(setq cursor-type 'bar)
-;; highlight current line
-;; (global-hl-line-mode 1)
 
 (require 'go-mode)
 
@@ -259,8 +255,8 @@
  '(ido-mode (quote both) nil (ido))
  '(imenu-auto-rescan t)
  '(indent-tabs-mode nil)
- '(inhibit-startup-screen t)
- '(initial-buffer-choice "~/Documents")
+ '(inhibit-startup-screen nil)
+ '(initial-buffer-choice nil)
  '(js2-auto-indent-p t)
  '(js2-basic-offset 2)
  '(kill-whole-line t)
@@ -343,3 +339,9 @@
 (setq auto-mode-alist  (cons '("Gemfile.lock$" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist  (cons '("Rakefile$" . ruby-mode) auto-mode-alist))
 (add-to-list 'auto-mode-alist '("\\.rake$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+
+;; Cursor
+(setq-default cursor-type 'bar)
+;; highlight current line
+;; (global-hl-line-mode 1)
