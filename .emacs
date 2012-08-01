@@ -345,3 +345,7 @@
 (setq-default cursor-type 'bar)
 ;; highlight current line
 ;; (global-hl-line-mode 1)
+
+(fset 'break-line-near-80
+   [?\C-a ?\C-u ?8 ?0 ?\C-f ?\M-b return])
+(global-set-key (kbd "C-|") 'break-line-near-80)
