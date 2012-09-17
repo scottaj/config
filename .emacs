@@ -43,6 +43,8 @@
 
 (require 'ruby-block)
 
+;; (require 'rspec-mode)
+
 (require 'ruby-tools)
 
 (require 'flymake-ruby)
@@ -77,6 +79,10 @@
 (require 'magit)
 
 (require 'js2-mode)
+
+(require 'jabber)
+
+(require 'json)
 
 (require 'heroku)
 
@@ -149,9 +155,9 @@
 
 (global-set-key (kbd "C-c c") 'comment-or-uncomment-region)
 (global-set-key (kbd "C-z") 'undo)
-(global-set-key (kbd "M-z") 'redo)
-(global-set-key (kbd "M-s") 'shell)
-(global-set-key (kbd "C-<escape>") 'magit-status)
+(global-set-key (kbd "s-z") 'redo)
+(global-set-key (kbd "s-s") 'shell)
+(global-set-key (kbd "s-<escape>") 'magit-status)
 (global-set-key (kbd "C-l") 'goto-line)
 
 (defadvice comment-or-uncomment-region (before slick-comment activate compile)
@@ -221,9 +227,10 @@
 (add-hook 'ruby-mode-hook (lambda () (local-set-key (kbd "C-`") 'ruby-flip-containing-block-type)))
 (add-hook 'ruby-mode-hook 'pretty-symbols-mode)
 
-;; OSX font
-(set-face-attribute 'default nil :font "consolas")
-(set-face-attribute 'default nil :height 160)
+;; Nix font
+(when (display-graphic-p)
+  (set-face-attribute 'default nil :font "inconsolata")
+  (set-face-attribute 'default nil :height 140))
 
 ;; Switch windows with SHIFT+arrow keys
 (windmove-default-keybindings)
@@ -235,9 +242,8 @@
  ;; If there is more than one, they won't work right.
  '(ac-auto-show-menu 1.0)
  '(ac-exuberant-ctags-tag-file-name "TAGS")
- '(ac-ignores (quote ("end" "def" "begin")))
  '(ac-modes (quote (emacs-lisp-mode lisp-interaction-mode c-mode cc-mode c++-mode java-mode clojure-mode scala-mode scheme-mode ocaml-mode tuareg-mode perl-mode cperl-mode python-mode ruby-mode ecmascript-mode javascript-mode js-mode js2-mode php-mode css-mode makefile-mode sh-mode fortran-mode f90-mode ada-mode xml-mode sgml-mode slim-mode coffee-mode)))
- '(blink-cursor-mode t)
+ '(ac-stop-words (quote ("end" "def" "begin")))
  '(coffee-tab-width 2)
  '(color-theme-is-cumulative nil)
  '(column-number-mode t)
@@ -266,8 +272,7 @@
  '(js2-auto-indent-p t)
  '(js2-basic-offset 2)
  '(kill-whole-line t)
- '(line-number-mode t)
- '(menu-bar-mode t)
+ '(line-number-mode nil)
  '(mode-require-final-newline nil)
  '(nxml-slash-auto-complete-flag t)
  '(pretty-symbol-patterns (quote ((955 lambda "\\<lambda\\>" (emacs-lisp-mode inferior-lisp-mode lisp-mode clojure-mode python-mode ruby-mode)) (402 lambda "\\<function\\>" (js-mode js2-mode)) (8800 relational "!=" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode python-mode ruby-mode coffee-mode)) (8800 relational "/=" (emacs-lisp-mode inferior-lisp-mode lisp-mode clojure-mode)) (8805 relational ">=" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode python-mode ruby-mode coffee-mode emacs-lisp-mode inferior-lisp-mode lisp-mode clojure-mode)) (8804 relational "<=" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode python-mode ruby-mode coffee-mode emacs-lisp-mode inferior-lisp-mode lisp-mode clojure-mode)) (8743 logical "&&" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode python-mode ruby-mode coffee-mode)) (8743 logical "\\<and\\>" (emacs-lisp-mode inferior-lisp-mode lisp-mode clojure-mode)) (8744 logical "||" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode python-mode ruby-mode coffee-mode)) (8744 logical "\\<or\\>" (emacs-lisp-mode inferior-lisp-mode lisp-mode clojure-mode)) (172 logical "\\<not\\>" (emacs-lisp-mode inferior-lisp-mode lisp-mode clojure-mode)))))
@@ -284,12 +289,11 @@
  '(standard-indent 2)
  '(tab-always-indent (quote complete))
  '(tool-bar-mode nil)
- '(transient-mark-mode nil)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
  '(wrap-region-global-mode t)
  '(yas/also-auto-indent-first-line t)
  '(yas/global-mode t nil (yasnippet))
- '(yas/root-directory (quote ("/Users/al/.emacs.d/elpa/feature-mode-0.4/snippets/" "/Users/al/.emacs.d/snippets/")) nil (yasnippet))
+ '(yas/root-directory (quote ("/home/alexander/.emacs.d/snippets/")) nil (yasnippet))
  '(yas/wrap-around-region t))
 
 ;;; relativenumber like vim
@@ -357,5 +361,20 @@
    [?\C-a ?\C-u ?8 ?0 ?\C-f ?\M-b return])
 (global-set-key (kbd "C-|") 'break-line-near-80)
 
-(require 'edit-server)
-(edit-server-start)
+(require 'fastnav)
+(global-set-key "\M-z" 'fastnav-zap-up-to-char-forward)
+(global-set-key "\M-Z" 'fastnav-zap-up-to-char-backward)
+(global-set-key "\M-s" 'fastnav-jump-to-char-forward)
+(global-set-key "\M-S" 'fastnav-jump-to-char-backward)
+(global-set-key "\M-r" 'fastnav-replace-char-forward)
+(global-set-key "\M-R" 'fastnav-replace-char-backward)
+(global-set-key "\M-i" 'fastnav-insert-at-char-forward)
+(global-set-key "\M-I" 'fastnav-insert-at-char-backward)
+(global-set-key "\M-j" 'fastnav-execute-at-char-forward)
+(global-set-key "\M-J" 'fastnav-execute-at-char-backward)
+(global-set-key "\M-k" 'fastnav-delete-char-forward)
+(global-set-key "\M-K" 'fastnav-delete-char-backward)
+(global-set-key "\M-m" 'fastnav-mark-to-char-forward)
+(global-set-key "\M-M" 'fastnav-mark-to-char-backward)
+(global-set-key "\M-p" 'fastnav-sprint-forward)
+(global-set-key "\M-P" 'fastnav-sprint-backward)
